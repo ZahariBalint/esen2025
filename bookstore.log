@@ -1,0 +1,5 @@
+1745306249691:help
+1745306748981:q
+1745306783376:create book
+1745306845609:create book --title Valami --publisher Valaki --author Jani --price 1243
+1745307012786:create book --title Valami --publisher KiadoKFT --author Valaki --price 1243
