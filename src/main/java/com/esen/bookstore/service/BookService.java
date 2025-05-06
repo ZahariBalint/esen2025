@@ -1,12 +1,12 @@
 package com.esen.bookstore.service;
 
 import com.esen.bookstore.model.Book;
+import com.esen.bookstore.model.Bookstore;
 import com.esen.bookstore.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -51,5 +51,35 @@ public class BookService {
         if (price != null) { book.setPrice(price); }
 
         return bookRepository.save(book);
+    }
+
+    public Map<String,Double> findPrices(Long id){
+        if (!bookRepository.existsById(id)) {
+            throw new IllegalArgumentException("Cannot find book with id " + id);
+        }
+
+        var book = bookRepository.findById(id).get();
+
+        List<Bookstore> bookstores = bookstoreService.findAll();
+        Map<String,Double> prices = new HashMap<>();
+        for(Bookstore bookstore : bookstores){
+            prices.put(bookstore.getLocation(),bookstore.getPriceModifier()*book.getPrice());
+        }
+        return prices;
+    }
+
+    public List<Book> findByAuthorOrTitle(String title,String publisher,String author){
+        return bookRepository.findAll()
+                .stream()
+                .filter(book -> {if(title != null){
+                                    return book.getTitle().equals(title);}
+                                 if(publisher != null){
+                                     return book.getPublisher().equals(publisher);
+                                 }
+                                 if(author != null){
+                                     return book.getAuthor().equals(author);
+                                 }
+                                 return true;
+                                }).toList();
     }
 }

@@ -28,3 +28,12 @@
 1745911065846:list bookstores
 1745911466724:delete bookstore --id 1
 1745911470226:list bookstores
+1746513840064:list bookstore
+1746513873538:help
+1746513934910:update bookstore 5 Nagy 1.08
+1746513948705:list bookstores
+1746514941863:help
+1746514959787:list books
+1746514968523:find prices 3
+1746516332016:list books
+1746516356333:filtered books --title "Az aranyember"
