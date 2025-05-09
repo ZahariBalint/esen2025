@@ -35,8 +35,8 @@ public class BookHandler {
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
-        @ShellMethod(value = "Deletes a book by ID", key = "delete book")
-        public void deleteBook(Long id) {
+    @ShellMethod(value = "Deletes a book by ID", key = "delete book")
+    public void deleteBook(Long id) {
             bookService.delete(id);
         }
 
@@ -63,7 +63,7 @@ public class BookHandler {
         @ShellOption(defaultValue = ShellOption.NULL) String publisher,
         @ShellOption(defaultValue = ShellOption.NULL) String author
     ){
-        return bookService.findByAuthorOrTitle(title,publisher,author)
+        return bookService.findByTitleOrPublisherOrAuthor(title,publisher,author)
                 .stream()
                 .map(Book::toString)
                 .collect(Collectors.joining(System.lineSeparator()));

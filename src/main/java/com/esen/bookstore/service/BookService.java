@@ -24,6 +24,10 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    /**
+     * Egy könyv törlése az adatbázisból
+     * @param id a törlendő könyv id attributuma
+     */
     public void delete(Long id) {
         if (!bookRepository.existsById(id)) {
             throw new IllegalArgumentException("Cannot find book with id " + id);
@@ -34,6 +38,15 @@ public class BookService {
         bookRepository.delete(book);
     }
 
+    /**
+     * Egy könyv frissítése az adatbázisban
+     * @param id a könyv id-ja ami alapján megtaláljuk
+     * @param title a könyv címe
+     * @param author a könyv szerzője
+     * @param publisher a könyv kiadója
+     * @param price a könyv ára
+     * @return könyv példány a módosított attributum értékekkel
+     */
     public Book update(Long id, String title, String author, String publisher, Double price) {
         if (Stream.of(title, author, publisher, price).allMatch(Objects::isNull)) {
             throw new IllegalArgumentException("At least one input is required");
@@ -53,6 +66,11 @@ public class BookService {
         return bookRepository.save(book);
     }
 
+    /**
+     * Egy metódus egy bizonyos könyv árainak kilistázására a különböző boltokban
+     * @param id a könyv id-ja ami alapján megtaláljuk
+     * @return egy (@code Map<String,Double>) objektumot a boltok nevével és a könyv árával az egyes boltokban
+     */
     public Map<String,Double> findPrices(Long id){
         if (!bookRepository.existsById(id)) {
             throw new IllegalArgumentException("Cannot find book with id " + id);
@@ -68,7 +86,14 @@ public class BookService {
         return prices;
     }
 
-    public List<Book> findByAuthorOrTitle(String title,String publisher,String author){
+    /**
+     * Egy kereső metódus, amivel cím,kiadó vagy író alapján kereshetjük a könyvet
+     * @param title a könyv címe
+     * @param publisher a könyv kiadója
+     * @param author a könyv írója
+     * @return egy (@code List) objektumot a potenciális könyvekkel
+     */
+    public List<Book> findByTitleOrPublisherOrAuthor(String title,String publisher,String author){
         return bookRepository.findAll()
                 .stream()
                 .filter(book -> {if(title != null){
@@ -79,7 +104,7 @@ public class BookService {
                                  if(author != null){
                                      return book.getAuthor().equals(author);
                                  }
-                                 return true;
+                                 return false;
                                 }).toList();
     }
 }

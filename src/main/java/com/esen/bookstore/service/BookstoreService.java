@@ -20,6 +20,10 @@ public class BookstoreService {
         bookstoreRepository.save(bookstore);
     }
 
+    /**
+     * Eltávolít egy könyvet a bolt adatbázisából
+     * @param book az eltávolítandó könyv
+     */
     public void removeBookFromInventories(Book book) {
         bookstoreRepository.findAll()
                 .forEach(bookstore -> {
@@ -32,15 +36,27 @@ public class BookstoreService {
         return bookstoreRepository.findAll();
     }
 
+    /**
+     * Eltávolítja az adatbázisból az egész boltot
+     * @param id a bolt id-ja
+     */
     public void delete(Long id) {
         if (!bookstoreRepository.existsById(id)) {
-            throw new IllegalArgumentException("Cannot find book with id " + id);
+            throw new IllegalArgumentException("Cannot find bookstore with id " + id);
         }
 
         var bookstore = bookstoreRepository.findById(id).get();
         bookstoreRepository.delete(bookstore);
     }
 
+    /**
+     * Frissíti egy meglévő bolt adatait
+     * @param id a bolt id-ja ami alapján megtaláljuk
+     * @param location a város ahol a bolt van
+     * @param priceModifier az árat változtató változó
+     * @param moneyInCashRegister készpénz a kasszában
+     * @return a boltot a frissített adatokkal
+     */
     public Bookstore update(Long id,String location,Double priceModifier,Double moneyInCashRegister){
         if (Stream.of(id, location, priceModifier, moneyInCashRegister).allMatch(Objects::isNull)) {
             throw new IllegalArgumentException("At least one input is required");
